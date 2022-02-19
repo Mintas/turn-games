@@ -1,11 +1,8 @@
 package ru.hse.java.tafl;
 
-import ru.hse.java.model.Cell;
-import ru.hse.java.model.Field;
+import ru.hse.java.model.Desk;
 
-import java.util.List;
-
-public class TaflField extends Field {
+public class TaflField extends Desk {
     private static final int TAFL_SIZE = 13;
 
     public TaflField() {
