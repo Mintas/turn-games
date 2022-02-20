@@ -11,6 +11,10 @@ public class Position {
         this.y = y;
     }
 
+    public static int manhattanDistance(Position to, Position center) {
+        return Math.abs(to.getX() - center.getX()) + Math.abs(to.getY() - center.getY()) ;
+    }
+
     public int getX() {
         return x;
     }
