@@ -2,23 +2,19 @@ package ru.hse.java.engine;
 
 import ru.hse.java.exception.InvalidGameStatusException;
 import ru.hse.java.exception.InvalidMoveException;
-import ru.hse.java.model.Desk;
-import ru.hse.java.model.Move;
-import ru.hse.java.model.Player;
-import ru.hse.java.model.Status;
-import ru.hse.java.tafl.TaflGameEngine;
+import ru.hse.java.model.*;
 
 import java.util.Objects;
 
-public abstract class AbstractGameEngine implements GameEngine {
+public abstract class AbstractGameEngine<M extends Move, D extends Desk> implements GameEngine<M> {
     private Status status;
     private Player currentPlayer;
-    protected final Desk desk;
+    protected final D desk;
 
-    public AbstractGameEngine(Player firstPlayer, Desk desk) {
+    public AbstractGameEngine(Player firstPlayer, DeskFactory<D> deskFactory) {
         this.status = Status.ACTIVE;
         this.currentPlayer = firstPlayer;
-        this.desk = desk;
+        this.desk = deskFactory.createDesk();
     }
 
     @Override
@@ -37,7 +33,7 @@ public abstract class AbstractGameEngine implements GameEngine {
     }
 
     @Override
-    public void makeMove(Move move) throws InvalidGameStatusException, InvalidMoveException {
+    public void makeMove(M move) throws InvalidGameStatusException, InvalidMoveException {
         if (status != Status.ACTIVE) {
             throw new InvalidGameStatusException(status);
         }
@@ -59,7 +55,7 @@ public abstract class AbstractGameEngine implements GameEngine {
      * @param move to perform
      * @throws InvalidMoveException
      */
-    protected abstract void doMove(Move move) throws InvalidMoveException;
+    protected abstract void doMove(M move) throws InvalidMoveException;
 
     @Override
     public String getRepresentation() {

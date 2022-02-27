@@ -2,13 +2,10 @@ package ru.hse.java.engine;
 
 import ru.hse.java.exception.InvalidGameStatusException;
 import ru.hse.java.exception.InvalidMoveException;
-import ru.hse.java.model.Move;
-import ru.hse.java.model.Player;
-import ru.hse.java.model.Printable;
-import ru.hse.java.model.Status;
+import ru.hse.java.model.*;
 
-public interface GameEngine extends Printable {
+public interface GameEngine<M extends Move> extends Printable {
     Status getStatus();
     Player getCurrentPlayer();
-    void makeMove(Move move) throws InvalidGameStatusException, InvalidMoveException;
+    void makeMove(M move) throws InvalidGameStatusException, InvalidMoveException;
 }

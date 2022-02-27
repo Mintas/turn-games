@@ -1,3 +1,4 @@
+/*
 package ru.hse.java.checkers;
 
 import ru.hse.java.model.Desk;
@@ -12,3 +13,4 @@ public class CheckerField extends Desk {
 
 
 }
+*/

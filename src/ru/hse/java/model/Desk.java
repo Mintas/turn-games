@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Desk implements Printable {
-    private final int height;
-    private final int width;
+    protected final int height;
+    protected final int width;
     private final List<Cell> desk; // [][] -> [{y = 0, x = 0}, {y = 0, x = 1}, ..... ]
 
     public Desk(int height, int width) {
@@ -32,14 +32,43 @@ public abstract class Desk implements Printable {
         return desk.get(cellIndex(position));
     }
 
+    public List<List<Position>> asLines() {
+        List<List<Position>> lines = new ArrayList<>();
+        for (int y = 0; y < height; y++) {
+            List<Position> horizontal = new ArrayList<>();
+            for (int x = 0; x < width; x++) {
+                horizontal.add(new Position(x, y));
+            }
+            lines.add(horizontal);
+        }
+        return lines;
+    }
+
     private boolean isInRange(int coordinate, int limit) {
         return coordinate < limit && coordinate >= 0;
     }
 
     @Override
     public String getRepresentation() {
-        //todo : implement
-        return "printField";
+        StringBuilder stringBuilder = new StringBuilder();
+        List<List<Position>> lists = asLines();
+        for (List<Position> list : lists) {
+            for (Position position : list) {
+                Cell cell = cellAt(position);
+                String cellPresentation = cell.hasFigure() ?
+                        cell.getFigure().getRepresentation() :
+                        //template method
+                        emptyCellPresentation(position);
+                stringBuilder.append(cellPresentation);
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    protected String emptyCellPresentation(Position position) {
+        return "▫";
     }
 
     public void removeFigure(Position from) {
@@ -52,15 +81,5 @@ public abstract class Desk implements Printable {
 
     private int cellIndex(Position position) {
         return position.getY() * width + position.getX();
-    }
-
-    public boolean isCornerCell(Position to) {
-        Position center = getCenter();
-        return Position.manhattanDistance(to, center) == width/2 + height/2;
-    }
-
-    private Position getCenter() {
-        //todo
-        return null;
     }
 }
